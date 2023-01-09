@@ -1,2 +1,2 @@
-# TrickHub_Back_end
+# TrickHub
 Trick Hub team's website backend
