@@ -12,7 +12,7 @@ def slugify_function(content): return slugify(content, allow_unicode=True)
 
 
 class IpAddress(models.Model):                                          # users ip address
-    ip_address = models.GenericIPAddressField(verbose_name='آدرس آی پی')
+    ip_address = models.GenericIPAddressField()
 
 
 class Article(models.Model):
@@ -44,7 +44,7 @@ class Article(models.Model):
         return f'{self.title} - {self.description[:30]}...'
 
 
-class Like(models.Model):                                                       # likes model
+class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
     video = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='likes')
     created_at = models.DateTimeField(auto_now_add=True)
