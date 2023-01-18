@@ -41,6 +41,9 @@ INSTALLED_APPS = [
 
     # packages
     'rest_framework',
+    'django_jalali',
+    'django_extensions',
+    'django_cleanup.apps.CleanupConfig',
 
     # app's
     'article_app.apps.ArticleAppConfig',
@@ -57,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'article_app.middleware.SaveIpAddressMiddleware',
 ]
 
 ROOT_URLCONF = 'TrickHub.urls'
