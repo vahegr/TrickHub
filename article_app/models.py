@@ -36,6 +36,7 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     jalali_created = jmodels.jDateField(auto_now_add=True, null=True)
     hits = models.ManyToManyField(IpAddress, blank=True, related_name="hits")
+    allowing = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-created_at',)
