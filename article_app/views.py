@@ -17,5 +17,5 @@ class ArticleViewSet(ModelViewSet):
         if self.action in ['update', 'create', 'destroy', 'partial_update']:
             permission_classes = [IsAdminUser]
         else:
-            permission_classes = [IsAdminUser, OwnerOrRead]
+            permission_classes = [OwnerOrRead]
         return [permission() for permission in permission_classes]
