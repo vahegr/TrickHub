@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'account_app.apps.AccountAppConfig',
     'about_app.apps.AboutAppConfig',
     'service_app.apps.ServiceAppConfig',
+    'contact_app.apps.ContactAppConfig',
+    'plan_app.apps.PlanAppConfig',
+    'sample_app.apps.SampleAppConfig',
 ]
 
 MIDDLEWARE = [
