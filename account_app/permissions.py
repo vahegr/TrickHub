@@ -7,4 +7,4 @@ class OwnerOrRead(BasePermission):
         if request.method in SAFE_METHODS:
             return True
 
-        return obj.creator == request.user
+        return obj.user == request.user
