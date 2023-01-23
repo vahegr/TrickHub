@@ -52,7 +52,7 @@ class Like(models.Model):
 
 
 class Comment(models.Model):
-    video = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replay')
     comment = models.TextField(max_length=500)

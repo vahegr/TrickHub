@@ -27,6 +27,8 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    
     class Meta:
         model = Comment
-        fields = ('id', 'video', 'user', 'parent', 'comment', 'created_time', 'jalali_created')
+        fields = ('id', 'article', 'user', 'parent', 'comment', 'created_time', 'jalali_created')
