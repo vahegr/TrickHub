@@ -25,6 +25,10 @@ class ArticleSerializer(serializers.ModelSerializer):
         serializer = CommentSerializer(instance=obj.comments.all(), many=True)
         return serializer.data
 
+    def get_likes(self, obj):
+        serializer = LikeSerializer(instance=obj.likes.all(), many=True)
+        return serializer.data
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field='username', read_only=True)
@@ -32,3 +36,11 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'article', 'user', 'parent', 'comment', 'created_time', 'jalali_created')
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(slug_field='username', read_only=True)
+
+    class Meta:
+        model = Like
+        fields = ('id', 'article', 'user', 'created_at')
