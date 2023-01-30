@@ -5,7 +5,7 @@ from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from account_app.permissions import OwnerOrRead
 from .serializers import ArticleSerializer
-from .models import Article
+from .models import Article, IpAddress
 
 
 # class ArticleViewSet(ModelViewSet):
@@ -30,7 +30,19 @@ class ArticlesView(APIView):
 class ArticleDetailView(APIView):
     def get(self, request, id, slug):
         article = Article.objects.get(id=id, slug=slug, allowing=True)
-        ser = ArticleSerializer(instance=article)
+        ser = ArticleSerializer(instance=article, context={'request': request})
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        try:
+            ip_address = IpAddress.objects.get(ip_address=ip)
+        except IpAddress.DoesNotExist:
+            ip_address = IpAddress(ip_address=ip)
+            ip_address.save()
+        if ip_address not in article.hits.all():
+            article.hits.add(ip_address)
         return Response(ser.data)
 
 
