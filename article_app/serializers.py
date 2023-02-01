@@ -5,6 +5,7 @@ from .models import Article, Comment, Like
 class ArticleSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
+    likes = serializers.SerializerMethodField()
     user = serializers.SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
@@ -12,7 +13,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'parent', 'slug', 'user',
             'title', 'description', 'image',
-            'created_at', 'jalali_created', 'hits', 'comments')
+            'created_at', 'jalali_created', 'hits', 'comments', 'likes')
 
     def get_image(self, obj):               # if view was ApiView this is necessary
         request = self.context.get('request')

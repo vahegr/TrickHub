@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from account_app.permissions import OwnerOrRead
-from .serializers import ArticleSerializer
-from .models import Article, IpAddress
+from .serializers import ArticleSerializer, LikeSerializer
+from .models import Article, IpAddress, Like
 
 
 # class ArticleViewSet(ModelViewSet):
@@ -81,3 +81,23 @@ class DeleteArticleView(APIView):
         instance = Article.objects.get(id=id)
         instance.delete()
         return Response({"response": "deleted"}, status=status.HTTP_200_OK)
+
+
+class LikeListCreate(APIView):
+
+    def get(self, request, id):
+        article_likes = Article.objects.get(id=id).likes.all()
+        serializer = LikeSerializer(instance=article_likes, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, id):
+        article = Article.objects.get(id=id)
+        check = Like.objects.filter(user_id=request.user.id, article_id=article.id)
+        if check.exists():
+            check.delete()
+            return Response({
+                "message": "unliked"
+            })
+        new_like = Like.objects.create(user_id=request.user.id, article_id=article.id)
+        new_like.save()
+        return Response({"response": "liked"}, status=status.HTTP_201_CREATED)
