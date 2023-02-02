@@ -53,8 +53,9 @@ class Like(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replay')
+    firstname = models.CharField(max_length=150)
+    lastname = models.CharField(max_length=300)
     comment = models.TextField(max_length=500)
     created_time = models.DateTimeField(auto_now_add=True)
     jalali_created = jmodels.jDateField(auto_now_add=True, null=True)

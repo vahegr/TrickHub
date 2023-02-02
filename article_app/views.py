@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from account_app.permissions import OwnerOrRead
-from .serializers import ArticleSerializer, LikeSerializer
-from .models import Article, IpAddress, Like
+from .serializers import ArticleSerializer, LikeSerializer, CommentSerializer
+from .models import Article, IpAddress, Like, Comment
 
 
 # class ArticleViewSet(ModelViewSet):
@@ -101,3 +101,28 @@ class LikeListCreate(APIView):
         new_like = Like.objects.create(user_id=request.user.id, article_id=article.id)
         new_like.save()
         return Response({"response": "liked"}, status=status.HTTP_201_CREATED)
+
+class CommentCreate(APIView):
+    def get(self, request, id):
+        article_comments = Article.objects.get(id=id).comments.all()
+        serializer = CommentSerializer(instance=article_comments, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, id):
+        article = Article.objects.get(id=id)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.validated_data['article'] = article
+            serializer.save()
+            return Response({"response": "commented"}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # def post(self, request, id):
+    #     article = Article.objects.get(id=id)
+    #     return Response({
+    #         "message": "commented"
+    #     })
+    #     new_comment = Comment.objects.create(article_id=article.id)
+    #     new_like.save()
+    #     return Response({"response": "liked"}, status=status.HTTP_201_CREATED)
