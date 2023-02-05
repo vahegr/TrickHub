@@ -10,3 +10,8 @@ from .models import Service
 class ServicesViewSet(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+
+    def get_permissions(self):
+        if self.action in ['update', 'create', 'destroy', 'partial_update']:
+            self.permission_classes = [IsAdminUser, ]
+        return super(ServicesViewSet, self).get_permissions()
