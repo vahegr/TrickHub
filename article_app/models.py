@@ -64,4 +64,4 @@ class Comment(models.Model):
         ordering = ('-created_time',)
 
     def __str__(self):
-        return f"{self.user.full_name} - {self.comment[:30]}... "
+        return f"{self.firstname} - {self.comment[:30]}... "
